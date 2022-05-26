@@ -6,6 +6,7 @@ import { faMoon as farMoon } from "@fortawesome/free-regular-svg-icons";
 import Button from "../Button/Button";
 import { ThemeContext } from "../../context/ThemeStore";
 import { useContext } from "react";
+import { NavLink } from "react-router-dom";
 
 const StyledNav = styled.nav`
   background-color: ${(props) => props.theme.secondaryColor};
@@ -13,9 +14,12 @@ const StyledNav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1rem;
-  box-shadow: 0 2px 10px 0 rgba(0,0,0,.2);
+  padding: 2rem 1rem;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
 
+  a{
+    text-decoration: none;
+  }
   h1 {
     font-size: 1.3rem;
     cursor: pointer;
@@ -36,7 +40,9 @@ const Navbar = () => {
 
   return (
     <StyledNav>
-      <h1>Where in the world</h1>
+      <NavLink to="/">
+        <h1>Where in the world</h1>
+      </NavLink>
       <Button onClick={darkModeToggler}>
         <FontAwesomeIcon icon={moonIcon} />
         Dark Mode
