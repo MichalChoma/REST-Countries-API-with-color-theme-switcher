@@ -1,6 +1,5 @@
-import styled from "styled-components";
 import Navbar from "./components/Navbar/Navbar";
-import { ThemeStore } from "./context/ThemeStore";
+import { ContextStore } from "./context/ContextStore";
 import Theme from "./Theme";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
@@ -8,7 +7,7 @@ import CountryDetail from "./pages/CountryDetail";
 
 function App() {
   return (
-    <ThemeStore>
+    <ContextStore>
       <Theme>
         <Router>
           <div style={{overflowX:"hidden"}}>
@@ -20,7 +19,7 @@ function App() {
           </div>
         </Router>
       </Theme>
-    </ThemeStore>
+    </ContextStore>
   );
 }
 

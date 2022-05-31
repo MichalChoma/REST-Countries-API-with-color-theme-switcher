@@ -11,7 +11,7 @@ const StyledBtn = styled.button`
     border-radius: .5rem;
     transition: background-color .3s ease-in-out;
 
-    &:hover,&:focus,&:active{
+    &:hover,&:active{
         background-color: ${props => props.theme.backgroundColor};
     }
 `

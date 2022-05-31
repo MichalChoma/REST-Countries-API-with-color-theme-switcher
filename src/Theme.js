@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { ThemeContext } from "./context/ThemeStore";
+import { Context } from "./context/ContextStore";
 
 const lightTheme = {
   backgroundColor: "hsl(0, 2%, 91%)",
@@ -40,7 +40,7 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const Theme = ({ children }) => {
-  const { isDarkMode } = useContext(ThemeContext);
+  const { isDarkMode } = useContext(Context);
   return (
   <ThemeProvider theme={ isDarkMode ? darkTheme : lightTheme}>
       <GlobalStyles />

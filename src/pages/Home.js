@@ -1,124 +1,99 @@
-import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import React, { useState, useContext } from "react";
+import { Context } from "../context/ContextStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-
-const StyledWrapper = styled.main`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  padding: 2rem 1rem;
-`;
-
-const StyledForm = styled.form`
-  width: 100%;
-`;
-
-const StyledFormButton = styled.button`
-  background-color: ${(props) => props.theme.secondaryColor};
-  color: ${(props) => props.theme.fontColor};
-  border: none;
-  cursor: pointer;
-  padding: 1rem;
-`;
-
-const SearchWrapper = styled.div`
-  display: flex;
-  background-color: transparent;
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
-  &:before {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    opacity: 0;
-    transition: all 0.3s ease-in-out;
-    transform: translateX(-50%);
-    width: 100%;
-    content: "";
-    height: 2px;
-    background-color: ${props => props.theme.fontColor};
-  }
-  &:focus-within {
-    &:before {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-`;
-const StyledInput = styled.input`
-  background-color: ${(props) => props.theme.secondaryColor};
-  color: ${(props) => props.theme.fontColor};
-  border: none;
-  padding: 1rem 0px;
-  width: 100%;
-
-  ::placeholder {
-    color: ${(props) => props.theme.fontColor};
-  }
-
-  :focus {
-    outline: none;
-  }
-`;
-const StyledSelect = styled.select`
-    margin-top: 3rem;
-    border: none;
-    padding: 1rem .2rem;
-    border-radius: 8px;
-    background-color: ${props => props.theme.secondaryColor};
-    color: ${props => props.theme.fontColor}
-`
+import {
+  StyledWrapper,
+  StyledForm,
+  SearchWrapper,
+  StyledFormButton,
+  StyledInput,
+  StyledSelect,
+  CardsWrapper,
+} from "./HomeUI";
+import Spinner from "../components/Spinner/Spinner";
+import useDebounce from "../hooks/useDebounce";
+import CountryCard from "../components/CountryCard/CountryCard";
 
 const Home = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [selectRegion, setSelectRegion] = useState("")
-  const inputRef = useRef();
-  const selectRegionRef = useRef();
 
+  const {apiData, loading, filterCountries} = useContext(Context)
+  const [inputValue, setInputValue] = useState("");
+  const [selectRegion, setSelectRegion] = useState("");
+
+  let content;
+  
   const inputHandler = (e) => {
     e.preventDefault();
-    setInputValue(inputRef.current.value);
+    setInputValue(e.target.value);
   };
 
-  const handleSelectRegion = e => {
-      e.preventDefault();
-      setSelectRegion(selectRegionRef.current.value)
+  
 
+  const handleSelectRegion = (e) => {
+    e.preventDefault();
+    setSelectRegion(e.target.value);
+  };
+
+  const debouncedInput = useDebounce(inputValue,250);
+
+  if(loading){
+    content = (<Spinner />)
+  } else if(apiData.length) {
+    
+    const filteredCountries = filterCountries(debouncedInput,selectRegion)
+    
+
+    if(filteredCountries.length > 0){
+      content = (
+        filteredCountries.map(el => (
+          <CountryCard
+          key={el.cca3}
+          id={el.cca3}
+          name={el.name.common}
+          population={el.population}
+          region={el.region}
+          capital={el.capital}
+          flag={el.flags.png}
+        />
+        ))
+      )
+    } else {
+      content = (<p>Countries not found</p>)
+    }
+  } else {
+    content = (<p>Error,please refresh</p>)
   }
-
-  console.log(inputValue);
-  console.log(selectRegion)
 
   return (
     <StyledWrapper>
       <StyledForm>
         <SearchWrapper>
-          <StyledFormButton onClick={inputHandler}>
+          <StyledFormButton>
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </StyledFormButton>
           <StyledInput
             type="text"
-            ref={inputRef}
+            value={inputValue}
             placeholder={"Search for a country... "}
             onChange={inputHandler}
           />
         </SearchWrapper>
-        <StyledSelect
-            ref={selectRegionRef}
-            onChange={handleSelectRegion}
-        >
-            <option value="All" defaultValue>Filter by Region</option>
-            <option value="Africa">Africa</option>
-            <option value="Americas">America</option>
-            <option value="Asia">Asia</option>
-            <option value="Europe">Europe</option>
-            <option value="Oceania">Oceania</option>
+        <StyledSelect onChange={handleSelectRegion}>
+          <option value="" defaultValue>
+            Filter by Region
+          </option>
+          <option value="Africa">Africa</option>
+          <option value="Americas">Americas</option>
+          <option value="Asia">Asia</option>
+          <option value="Europe">Europe</option>
+          <option value="Oceania">Oceania</option>
         </StyledSelect>
       </StyledForm>
+
+      <CardsWrapper>
+        {content}
+      </CardsWrapper>
     </StyledWrapper>
   );
 };
