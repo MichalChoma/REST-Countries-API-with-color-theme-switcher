@@ -1,44 +1,7 @@
 import React from "react";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
-
-const CardWrapper = styled.div`
-  display: flex;
-  margin-top: 2rem;
-  flex-direction: column;
-  width: 350px;
-  background-color: ${(props) => props.theme.secondaryColor};
-  overflow: hidden;
-  border-radius: 8px;
-  opacity: 1;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-
-  img {
-    width: 100%;
-    height: 200px;
-    object-position: center;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
-  }
-`;
-
-const ContentWrapper = styled.div`
-  padding: 1rem 1rem 3rem 1rem;
-
-  h3 {
-    padding: 0.5rem 0;
-  }
-`;
-
-const InfoLabel = styled.div`
-  display: flex;
-  font-weight: 600;
-
-  p {
-    margin-left: 5px;
-    font-weight: 300;
-  }
-`;
+import { motion } from "framer-motion";
+import { CardWrapper,ContentWrapper, InfoLabel } from "./CountryCard.style";
 
 const CountryCard = ({ name, population, region, capital, flag, id }) => {
   let capitalName;
@@ -53,23 +16,41 @@ const CountryCard = ({ name, population, region, capital, flag, id }) => {
   }
 
   return (
-    <Link to={`/${id}`}>
-      <CardWrapper>
-        <img src={flag} alt={`${name} flag`} />
-        <ContentWrapper>
-          <h3>{name}</h3>
-          <InfoLabel>
-            Population: <p>{population.toLocaleString()}</p>
-          </InfoLabel>
-          <InfoLabel>
-            Region: <p>{region}</p>
-          </InfoLabel>
-          <InfoLabel>
-            Capital: <p>{capitalName}</p>
-          </InfoLabel>
-        </ContentWrapper>
-      </CardWrapper>
-    </Link>
+    <motion.div
+      layout
+      variants={{
+        hidden: {
+          opacity: 0,
+          x: 100,
+        },
+        visible: {
+          opacity: 1,
+          x: 0,
+        },
+      }}
+      whileHover={{ scale:1.05 }}
+      initial="hidden"
+      exit="hidden"
+      animate="visible"
+    >
+      <Link to={`/${id}`}>
+        <CardWrapper>
+          <img src={flag} alt={`${name} flag`} />
+          <ContentWrapper>
+            <h3>{name}</h3>
+            <InfoLabel>
+              Population: <p>{population.toLocaleString()}</p>
+            </InfoLabel>
+            <InfoLabel>
+              Region: <p>{region}</p>
+            </InfoLabel>
+            <InfoLabel>
+              Capital: <p>{capitalName}</p>
+            </InfoLabel>
+          </ContentWrapper>
+        </CardWrapper>
+      </Link>
+    </motion.div>
   );
 };
 

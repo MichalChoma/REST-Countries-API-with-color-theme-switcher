@@ -1,23 +1,23 @@
 import Navbar from "./components/Navbar/Navbar";
 import { ContextStore } from "./context/ContextStore";
 import Theme from "./Theme";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import CountryDetail from "./pages/CountryDetail";
+import { BrowserRouter as Router} from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+
+import AnimatedRoutes from "./components/AnimatedRoutes/AnimatedRoutes";
 
 function App() {
   return (
     <ContextStore>
       <Theme>
+      <AnimatePresence exitBeforeEnter>
         <Router>
           <div style={{overflowX:"hidden"}}>
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/:countryName" element={<CountryDetail />} />
-          </Routes>
+          <AnimatedRoutes />
           </div>
         </Router>
+      </AnimatePresence>
       </Theme>
     </ContextStore>
   );

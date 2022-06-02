@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import styled, { keyframes } from 'styled-components'
 
 const SpinnerWrapper = styled.div`
@@ -26,9 +27,15 @@ const LoadingSpinner = styled.div`
 
 
 const Spinner = () => (
-    <SpinnerWrapper>
-        <LoadingSpinner />
-    </SpinnerWrapper>
+    <motion.div
+    initial={{opacity:0,}}
+    animate={{opacity:1}}
+    exit={{opacity:0}}
+    >
+        <SpinnerWrapper>
+            <LoadingSpinner />
+        </SpinnerWrapper>
+    </motion.div>
 )
 
 export default Spinner

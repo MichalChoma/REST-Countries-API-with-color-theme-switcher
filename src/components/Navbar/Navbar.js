@@ -21,6 +21,13 @@ const StyledNav = styled.nav`
   padding: 2rem 1rem;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
 
+  @media (min-width: 500px) {
+    padding: 2rem 5rem;
+  }
+  @media (min-width: 1500px) {
+    padding: 2rem 9rem;
+  }
+
   a{
     text-decoration: none;
   }

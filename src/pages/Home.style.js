@@ -1,15 +1,28 @@
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
-export const StyledWrapper = styled.main`
+export const StyledWrapper = styled(motion.main)`
   display: flex;
   justify-content: center;
   flex-direction: column;
   padding: 2rem 1rem;
+  @media (min-width: 500px) {
+    padding: 2rem 5rem;
+  }
+  @media (min-width: 1500px) {
+    padding: 2rem 9rem;
+  }
 `;
 
 export const StyledForm = styled.form`
   width: 100%;
   margin-top: 6rem;
+  @media (min-width:800px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+  }
 `;
 
 export const StyledFormButton = styled.button`
@@ -46,6 +59,9 @@ export const SearchWrapper = styled.div`
       transform: translateX(0);
     }
   }
+  @media (min-width:800px) {
+    width: 500px;
+  }
 `;
 
 export const StyledInput = styled.input`
@@ -72,6 +88,10 @@ export const StyledSelect = styled.select`
   background-color: ${(props) => props.theme.secondaryColor};
   color: ${(props) => props.theme.fontColor};
   cursor: pointer;
+
+  @media (min-width: 800px) {
+    margin-top: 0;
+  }
 `;
 
 export const CardsWrapper = styled.div`
@@ -81,4 +101,7 @@ export const CardsWrapper = styled.div`
   gap: 2rem;
   margin-top: 2rem;
   flex-wrap: wrap;
+  @media (min-width: 1500px) {
+    gap: 4rem;
+  }
 `
